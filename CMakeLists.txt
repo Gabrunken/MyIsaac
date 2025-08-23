@@ -17,10 +17,18 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SDL3)
 
+FetchContent_Declare(
+    SDL3_IMAGE
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+    GIT_TAG release-3.2.0
+)
+
+FetchContent_MakeAvailable(SDL3_IMAGE)
+
 add_compile_definitions(SDL3_STATIC)
 
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_23)

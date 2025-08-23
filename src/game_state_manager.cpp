@@ -1,49 +1,32 @@
 #include <game_state_manager.hpp>
 #include <iostream>
+#include <application.hpp>
 
-void GameStateManager::Initialize(SDL_Renderer& rendererRef, SDL_Window& windowRef, GameStateBase& initialGameState) noexcept
+void GameStateManager::SetState(std::unique_ptr<GameStateBase> newGameState) noexcept
 {
-	if (hasBeenInitialized) return;
+	if (!newGameState) return;
 
-	renderer = &rendererRef;
-	window = &windowRef;
-	if (!SetState(initialGameState))
-		return;
-
-	hasBeenInitialized = true;
-}
-
-bool GameStateManager::SetState(GameStateBase& newGameState) noexcept
-{
-	if (gameState)
-		gameState->Terminate();
-
-	gameState = &newGameState;
-
-	if (!gameState->Initialize())
-	{
-		std::printf("GameStateManager Error: failed to initialize the passed game state.\n");
-		return false;
-	}
-
-	return true;
+	lastTime = 0;
+	gameState = std::move(newGameState);
 }
 
 bool GameStateManager::Update() noexcept
 {
+	if (quitCurrentState) { quitCurrentState = false;  return false; }
+	if (!gameState.get()) return false;
+
 	bool result = false;
 
-	if (!hasBeenInitialized)
+	if (lastTime == 0) SDL_GetTicks();
+	
+	uint64_t deltaTime = (SDL_GetTicks() - lastTime);
+	if (gameState->_updateDelay > deltaTime)
 	{
-		std::printf("GameStateManager Error: you must initialize this class before calling the update function.\n");
-		return result;
+		SDL_Delay((gameState->_updateDelay - deltaTime));
+		deltaTime = SDL_GetTicks() - lastTime;
 	}
 
-	if (!gameState->hasBeenInitialized)
-	{
-		std::printf("GameStateManager Error: the selected game state must be always initialized before running its update function.\n");
-		return result;
-	}
+	lastTime = SDL_GetTicks();
 
 	SDL_PollEvent(&event);
 	EventHandlingResult eventResult = gameState->HandleEvents(event);
@@ -51,7 +34,6 @@ bool GameStateManager::Update() noexcept
 	{
 	case EventHandlingResult::TerminateApplication:
 		result = false;
-		gameState->Terminate();
 		break;
 	case EventHandlingResult::Continue:
 		result = true;
@@ -61,18 +43,14 @@ bool GameStateManager::Update() noexcept
 		break;
 	}
 
-	gameState->Update(0.018f);
-	gameState->Render(renderer, window);
+	gameState->Update(deltaTime / 1000.0f);
+	gameState->Render();
 
 	return result;
 }
 
-void GameStateManager::Terminate() noexcept
+void GameStateManager::FreeState() noexcept
 {
-	if (!hasBeenInitialized) return;
-
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-
-	hasBeenInitialized = false;
+	if (!gameState) return;
+	gameState.reset();
 }

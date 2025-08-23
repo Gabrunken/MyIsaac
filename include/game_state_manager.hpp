@@ -1,5 +1,6 @@
 #pragma once
 #include <Game States/game_state_base.hpp>
+#include <memory>
 
 class GameStateManager
 {
@@ -8,19 +9,19 @@ public:
 	GameStateManager(const GameStateManager& other) = delete;
 	void operator=(const GameStateManager& other) = delete;
 
-	static void Initialize(SDL_Renderer& rendererRef, SDL_Window& windowRef, GameStateBase& initialGameState) noexcept;
-	static bool SetState(GameStateBase& newGameState) noexcept;
+	static void SetState(std::unique_ptr<GameStateBase> newGameState) noexcept;
 	static bool Update() noexcept;
-	static void Terminate() noexcept;
+	static void FreeState() noexcept; //Must be called only outside the current state.
+
+	//Should be called internally by states to quit the application.
+	//It is needed since exiting using the std::exit() function crashes the process. DONT ASK WHY.
+	static inline void QueueQuitState() noexcept { quitCurrentState = true; }
 
 private:
-	static inline GameStateBase* gameState;
+	static inline std::unique_ptr<GameStateBase> gameState;
 
 	static inline SDL_Event event;
-	static inline float lastTime;
+	static inline uint64_t lastTime;
 
-	static inline SDL_Renderer* renderer;
-	static inline SDL_Window* window;
-
-	static inline bool hasBeenInitialized = false;
+	static inline bool quitCurrentState; //Used internally by states to queue a quit action without passing by the event loop.
 };

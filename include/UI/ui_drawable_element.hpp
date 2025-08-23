@@ -5,4 +5,6 @@ class UIDrawableElement : public UIElement
 {
 public:
 	virtual void DrawSelf() = 0;
+
+	using UIElement::UIElement;
 };

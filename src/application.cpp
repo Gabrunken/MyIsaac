@@ -4,12 +4,22 @@
 #include <game_state_manager.hpp>
 #include <Game States/game_state_mainmenu.hpp>
 #include <cstdlib>
+#include <resource_manager.hpp>
 
 static void Update();
 static void Terminate();
 
+SDL_Renderer* isaacRenderer;
+SDL_Window* isaacWindow;
+Vector2 windowScaledSize;
+
+static bool isaacStarted = false;
+
 void IsaacClone::Start()
 {
+	if (isaacStarted) return;
+	isaacStarted = true;
+
 	std::atexit(Terminate);
 
 	std::printf("Starting Isaac Clone...\n");
@@ -25,23 +35,19 @@ void IsaacClone::Start()
 
 	Vector2 windowSize;
 
-	windowSize.x = displayRect.w / 2;
-	windowSize.y = displayRect.h / 2;
+	windowSize.x = displayRect.w / static_cast<float>(2);
+	windowSize.y = displayRect.h / static_cast<float>(2);
 
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-
-	constexpr Vector2 coordinateBounds(16.0f, 9.0f);
-
-	if (!SDL_CreateWindowAndRenderer("Isaac Clone", windowSize.x, windowSize.y, 0, &window, &renderer))
+	if (!SDL_CreateWindowAndRenderer("Isaac Clone", windowSize.x, windowSize.y, 0, &isaacWindow, &isaacRenderer))
 	{
 		std::printf("Couldn't create the window: %s\n", SDL_GetError());
 		std::exit(1);
 	}
 
-	SDL_SetRenderScale(renderer, windowSize.x / coordinateBounds.x, windowSize.y / coordinateBounds.y);
+	SDL_SetRenderScale(isaacRenderer, windowSize.x / windowScaledSize.x, windowSize.y / windowScaledSize.y);
 
-	GameStateManager::Initialize(*renderer, *window, MainMenuGameState::GetInstance());
+	ResourceManager::GetInstance().Initialize();
+	GameStateManager::SetState(std::make_unique<MainMenuGameState>());
 
 	Update();
 }
@@ -54,6 +60,8 @@ static void Update()
 
 static void Terminate()
 {
-	GameStateManager::Terminate();
+	GameStateManager::FreeState();
+	SDL_DestroyWindow(IsaacClone::isaacWindow);
+	SDL_DestroyRenderer(IsaacClone::isaacRenderer);
 	SDL_Quit();
 }
