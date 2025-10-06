@@ -5,7 +5,7 @@
 class GameStateManager
 {
 public:
-	GameStateManager() = delete;
+	GameStateManager() = delete; //I SHOULD FUCKING MAKE THIS A SINGLETON INSTEAD OF ABSTRACT CLASS, SINCE THE OTHER CLASSES UTILIZE THAT PARADIGM. ITS A BEST PRACTICE.
 	GameStateManager(const GameStateManager& other) = delete;
 	void operator=(const GameStateManager& other) = delete;
 
