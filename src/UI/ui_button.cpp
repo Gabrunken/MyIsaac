@@ -9,13 +9,14 @@ void UIButton::CheckForHover()  noexcept
 	Vector2 mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);
 	int windowSizeX, windowSizeY;
-	SDL_GetWindowSize(IsaacClone::isaacWindow, &windowSizeX, &windowSizeY);
+	SDL_GetWindowSize(const_cast<SDL_Window*>(SSGE::GetWindow()), &windowSizeX, &windowSizeY);
 
 	mousePos.x /= windowSizeX;
 	mousePos.y /= windowSizeY;
 
-	mousePos.x *= IsaacClone::windowScaledSize.x;
-	mousePos.y *= IsaacClone::windowScaledSize.y;
+	Vector2 renderBounds = SSGE::GetRenderBounds();
+	mousePos.x *= renderBounds.x;
+	mousePos.y *= renderBounds.y;
 
 	if (_absoluteRect.IsPointInsideRect(mousePos))
 	{
@@ -40,16 +41,17 @@ void UIButton::CheckForClick(bool mouseDown) noexcept
 	Vector2 mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);
 	int windowSizeX, windowSizeY;
-	SDL_GetWindowSize(IsaacClone::isaacWindow, &windowSizeX, &windowSizeY);
+	SDL_GetWindowSize(const_cast<SDL_Window*>(SSGE::GetWindow()), &windowSizeX, &windowSizeY);
 
 	mousePos.x /= windowSizeX;
 	mousePos.y /= windowSizeY;
 
-	mousePos.x *= IsaacClone::windowScaledSize.x;
-	mousePos.y *= IsaacClone::windowScaledSize.y;
+	Vector2 renderBounds = SSGE::GetRenderBounds();
+	mousePos.x *= renderBounds.x;
+	mousePos.y *= renderBounds.y;
 
 	if (_absoluteRect.IsPointInsideRect(mousePos))
-	{	
+	{
 		if (_mouseDownOnIt && !mouseDown)
 		{
 			_onClickCallback();

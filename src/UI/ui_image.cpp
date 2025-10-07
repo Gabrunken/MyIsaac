@@ -1,11 +1,11 @@
 #include <UI/ui_image.hpp>
-#include <application.hpp>
+#include <engine.hpp>
 
 void UIImage::DrawSelf()
 {
 	SDL_Texture* texture = _texture.get();
 	if (!texture) return;
-	SDL_RenderTexture(IsaacClone::isaacRenderer, texture, nullptr, &_absoluteRect.GetSDLFRect());
+	SDL_RenderTexture(const_cast<SDL_Renderer*>(SSGE::GetRenderer()), texture, nullptr, &_absoluteRect.GetSDLFRect());
 }
 
 void UIImage::SetScaleRelativeToTexture(float size) noexcept
@@ -17,6 +17,7 @@ void UIImage::SetScaleRelativeToTexture(float size) noexcept
 		return;
 	}
 
-	_absoluteRect.size.x = texture->w / IsaacClone::windowScaledSize.x * size;
-	_absoluteRect.size.y = texture->h / IsaacClone::windowScaledSize.x * size;
+	Vector2 renderBounds = SSGE::GetRenderBounds();
+	_absoluteRect.size.x = texture->w / renderBounds.x * size;
+	_absoluteRect.size.y = texture->h / renderBounds.x * size;
 }

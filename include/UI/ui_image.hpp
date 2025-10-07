@@ -1,13 +1,13 @@
 #pragma once
 #include <UI/ui_drawable_element.hpp>
 #include <resource_manager.hpp>
-#include <application.hpp>
+#include <engine.hpp>
 
 class UIImage : public UIDrawableElement
 {
 public:
 	using UIDrawableElement::UIDrawableElement;
-	
+
 	void inline SetTexture(std::shared_ptr<SDL_Texture> texture) noexcept
 	{
 		if (!texture) return;

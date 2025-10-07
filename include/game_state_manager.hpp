@@ -1,5 +1,5 @@
 #pragma once
-#include <Game States/game_state_base.hpp>
+#include <game_state_base.hpp>
 #include <memory>
 
 class GameStateManager

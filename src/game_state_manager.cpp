@@ -1,6 +1,5 @@
 #include <game_state_manager.hpp>
 #include <iostream>
-#include <application.hpp>
 
 void GameStateManager::SetState(std::unique_ptr<GameStateBase> newGameState) noexcept
 {
@@ -18,7 +17,7 @@ bool GameStateManager::Update() noexcept
 	bool result = false;
 
 	if (lastTime == 0) SDL_GetTicks();
-	
+
 	uint64_t deltaTime = (SDL_GetTicks() - lastTime);
 	if (gameState->_updateDelay > deltaTime)
 	{

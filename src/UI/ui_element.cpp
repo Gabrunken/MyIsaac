@@ -1,5 +1,5 @@
 #include <UI/ui_element.hpp>
-#include <application.hpp>
+#include <engine.hpp>
 
 void UIElement::SetRelativePosition(const Vector2& position) noexcept
 {
@@ -15,8 +15,9 @@ void UIElement::SetRelativePosition(const Vector2& position) noexcept
 
 	else
 	{
-		parentRect.size.x = IsaacClone::windowScaledSize.x;
-		parentRect.size.y = IsaacClone::windowScaledSize.y;
+		Vector2 renderBounds = SSGE::GetRenderBounds();
+		parentRect.size.x = renderBounds.x;
+		parentRect.size.y = renderBounds.y;
 	}
 
 	Vector2 adjustedAnchor = (_anchor + 1.0f) / 2.0f;
@@ -40,8 +41,9 @@ void UIElement::SetRelativeSize(const Vector2& size) noexcept
 
 	else
 	{
-		parentSize.x = IsaacClone::windowScaledSize.x;
-		parentSize.y = IsaacClone::windowScaledSize.y;
+		Vector2 renderBounds = SSGE::GetRenderBounds();
+		parentSize.x = renderBounds.x;
+		parentSize.y = renderBounds.y;
 	}
 
 	Vector2 relativeSize = {

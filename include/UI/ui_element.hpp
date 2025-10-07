@@ -10,10 +10,10 @@ public:
 	UIElement() noexcept {}
 
 	UIElement(const Rect& rect) noexcept { SetRelativeRect(rect); }
-	
+
 	UIElement(
-		const Rect& rect, 
-		UIElement* parent) noexcept : 
+		const Rect& rect,
+		UIElement* parent) noexcept :
 		_parent(parent)
 	{ SetRelativeRect(rect); }
 

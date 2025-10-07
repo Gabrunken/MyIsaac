@@ -2,13 +2,13 @@
 #include <SDL3_image/SDL_image.h>
 #include <filesystem>
 #include <windows.h>
-#include <application.hpp>
+#include <engine.hpp>
 
 bool ResourceManager::Initialize()
 {
     char buffer[MAX_PATH];
     GetModuleFileNameA(NULL, buffer, MAX_PATH);
-    
+
     _baseResourcesPath = std::filesystem::path(buffer).parent_path().parent_path().parent_path().string();
     _baseResourcesPath.append("\\resources\\");
     return true;
@@ -26,7 +26,7 @@ std::shared_ptr<SDL_Texture> ResourceManager::LoadResource<SDL_Texture>(std::str
     }
 
     path.insert(0, _baseResourcesPath);
-    SDL_Texture* texture = IMG_LoadTexture(IsaacClone::isaacRenderer, path.c_str());
+    SDL_Texture* texture = IMG_LoadTexture(const_cast<SDL_Renderer*>(SSGE::GetRenderer()), path.c_str());
     if (!texture)
     {
         std::printf("Failed to load image at path: %s\n\tError message: %s\n", path.c_str(), SDL_GetError());
