@@ -1,1 +1,0 @@
-g++ .\src\*.cpp -L..\bin -L..\dependencies\SDL\lib -lssge -I..\include -I..\dependencies\SDL\include -std=c++23 -lsdl3 -lsdl3_image -o example
