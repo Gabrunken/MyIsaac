@@ -18,6 +18,7 @@ void UIButton::CheckForHover()  noexcept
 	mousePos.x *= renderBounds.x;
 	mousePos.y *= renderBounds.y;
 
+
 	if (_absoluteRect.IsPointInsideRect(mousePos))
 	{
 		if (!_isHovered)

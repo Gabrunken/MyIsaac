@@ -29,5 +29,5 @@ protected:
 
 	friend class GameStateManager;
 
-	float _updateDelay = 1000.0f/60.0f; //x/y where x are the milliseconds and 2 are the max fps.
+	float _updateDelay = 1000.0f/60.0f; //60 is a default value, every child can change its.
 };

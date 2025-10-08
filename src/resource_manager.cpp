@@ -6,11 +6,11 @@
 
 bool ResourceManager::Initialize()
 {
-    char buffer[MAX_PATH];
-    GetModuleFileNameA(NULL, buffer, MAX_PATH);
+    //char buffer[MAX_PATH];
+    //GetModuleFileNameA(NULL, buffer, MAX_PATH);
 
-    _baseResourcesPath = std::filesystem::path(buffer).parent_path().parent_path().parent_path().string();
-    _baseResourcesPath.append("\\resources\\");
+    //_baseResourcesPath = std::filesystem::path(buffer).parent_path().parent_path().parent_path().string();
+    //_baseResourcesPath.append("\\resources\\");
     return true;
 }
 
@@ -25,7 +25,7 @@ std::shared_ptr<SDL_Texture> ResourceManager::LoadResource<SDL_Texture>(std::str
         return std::static_pointer_cast<SDL_Texture>(_resources[path].lock());
     }
 
-    path.insert(0, _baseResourcesPath);
+    //path.insert(0, _baseResourcesPath);
     SDL_Texture* texture = IMG_LoadTexture(const_cast<SDL_Renderer*>(SSGE::GetRenderer()), path.c_str());
     if (!texture)
     {

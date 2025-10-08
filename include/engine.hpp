@@ -8,22 +8,24 @@
 
 namespace SSGE
 {
-	static bool SSGEStarted = false;
-	inline static SDL_Renderer* renderer;
-	inline static SDL_Window* window;
-	inline static Vector2 renderBounds;
+	inline bool SSGEStarted;
+	inline SDL_Renderer* renderer;
+	inline SDL_Window* window;
+	inline Vector2 renderBounds;
 
 	inline const SDL_Renderer* GetRenderer() noexcept {return renderer;}
 	inline const SDL_Window* GetWindow() noexcept {return window;}
 	inline Vector2 GetRenderBounds() noexcept {return renderBounds;}
 
 	template<typename T>
-	bool Init(const std::string& windowTitle, Vector2 windowSize, Vector2 renderBounds) noexcept
+	bool Init(const std::string& windowTitle, Vector2 windowSize, Vector2 inRenderBounds) noexcept
 	{
 		static_assert(std::is_base_of<GameStateBase, T>());
 
 		if (SSGEStarted) return true;
 		SSGEStarted = true;
+
+		renderBounds = inRenderBounds;
 
 		if (!SDL_Init(SDL_INIT_VIDEO))
 		{

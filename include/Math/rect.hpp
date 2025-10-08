@@ -8,7 +8,7 @@ public:
 	Rect() {}
 	Rect(const Vector2& position, const Vector2& size) : position(position), size(size) {}
 	Rect(const SDL_FRect& rect) : position(rect.x, rect.y), size(rect.w, rect.h) {}
-	Rect(const SDL_Rect& rect) : position(static_cast<float>(rect.x), static_cast<float>(rect.y)), 
+	Rect(const SDL_Rect& rect) : position(static_cast<float>(rect.x), static_cast<float>(rect.y)),
 								 size(static_cast<float>(rect.w), static_cast<float>(rect.h)) {}
 
 	bool inline IsPointInsideRect(const Vector2& point) const noexcept
@@ -42,7 +42,7 @@ public:
 		return _sdlFRect;
 	}
 
-	Vector2 position, size;
+	Vector2 position, size = Vector2(1);
 
 protected:
 	mutable SDL_FRect _sdlFRect;

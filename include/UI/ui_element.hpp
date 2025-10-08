@@ -67,7 +67,7 @@ public:
 	}
 
 protected:
-	Rect _absoluteRect{};
+	Rect _absoluteRect{}; //A rect which treats the window as its parent
 	UIElement* _parent = nullptr; //If it is null, just treat it as the window's rect.
 	Vector2 _anchor{};
 };
