@@ -1,14 +1,6 @@
 #include <game_state_manager.hpp>
 #include <iostream>
 
-void GameStateManager::SetState(std::unique_ptr<GameStateBase> newGameState) noexcept
-{
-	if (!newGameState) return;
-
-	lastTime = 0;
-	gameState = std::move(newGameState);
-}
-
 bool GameStateManager::Update() noexcept
 {
 	if (quitCurrentState) { quitCurrentState = false;  return false; }

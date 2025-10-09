@@ -50,7 +50,7 @@ namespace SSGE
 		SDL_SetRenderScale(renderer, windowSize.x / renderBounds.x, windowSize.y / renderBounds.y);
 
 		ResourceManager::GetInstance().Initialize();
-		GameStateManager::SetState(std::make_unique<T>());
+		GameStateManager::SetState<T>();
 
 		return true;
 	}

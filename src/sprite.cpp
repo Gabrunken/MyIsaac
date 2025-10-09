@@ -10,13 +10,13 @@ void Sprite::DrawSelf() const noexcept
 	    SDL_RenderTexture(
 	    const_cast<SDL_Renderer*>(SSGE::GetRenderer()),
 	    texture,
-	    nullptr,
+	    &_atlasRect.GetSDLFRect(),
 	    &_rect.GetSDLFRect());
     else
         SDL_RenderTextureRotated(
         const_cast<SDL_Renderer*>(SSGE::GetRenderer()),
         texture,
-        nullptr,
+        &_atlasRect.GetSDLFRect(),
         &_rect.GetSDLFRect(),
         _rotation,
         nullptr,
@@ -37,16 +37,10 @@ void Sprite::Rotate(float amount) noexcept
     _rotation += amount;
 }
 
-void Sprite::SetRotation(float rotation) noexcept
-{
-    _rotation = std::clamp(rotation, 0.0f, 360.0f);
-}
-
 void Sprite::SetScale(Vector2 scale) noexcept
 {
-    SDL_Texture* texture = _texturePtr.get();
-    if (!texture) {std::printf("A texture pointer has been found invalid when rescaling a sprite\n"); return;};
     Vector2 renderBounds = SSGE::GetRenderBounds();
-    _rect.size.x = (texture->w / renderBounds.x) * scale.x;
-    _rect.size.y = (texture->h / renderBounds.x) * scale.y;
+    //Also take into account the atlas rect and not the whole texture size
+    _rect.size.x = (_atlasRect.size.x / renderBounds.x) * scale.x;
+    _rect.size.y = (_atlasRect.size.y / renderBounds.x) * scale.y;
 }

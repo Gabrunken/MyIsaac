@@ -9,7 +9,15 @@ public:
 	GameStateManager(const GameStateManager& other) = delete;
 	void operator=(const GameStateManager& other) = delete;
 
-	static void SetState(std::unique_ptr<GameStateBase> newGameState) noexcept;
+	template<typename T>
+	static void SetState() noexcept
+	{
+		static_assert(std::is_base_of<GameStateBase, T>());
+
+		lastTime = 0;
+		gameState = std::make_unique<T>(); //The old one will be garbage collected by the unique_ptr
+	}
+
 	static bool Update() noexcept;
 	static void FreeState() noexcept; //Must be called only outside the current state.
 
