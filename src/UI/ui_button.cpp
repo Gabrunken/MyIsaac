@@ -6,18 +6,7 @@ void UIButton::CheckForHover()  noexcept
 	if (!_enabled) return;
 	if (!_onHoverBeginCallback && !_onHoverEndCallback) return;
 
-	Vector2 mousePos;
-	SDL_GetMouseState(&mousePos.x, &mousePos.y);
-	int windowSizeX, windowSizeY;
-	SDL_GetWindowSize(const_cast<SDL_Window*>(SSGE::GetWindow()), &windowSizeX, &windowSizeY);
-
-	mousePos.x /= windowSizeX;
-	mousePos.y /= windowSizeY;
-
-	Vector2 renderBounds = SSGE::GetRenderBounds();
-	mousePos.x *= renderBounds.x;
-	mousePos.y *= renderBounds.y;
-
+	Vector2 mousePos = SSGE::GetMousePosition();
 
 	if (_absoluteRect.IsPointInsideRect(mousePos))
 	{
@@ -39,17 +28,7 @@ void UIButton::CheckForClick(bool mouseDown) noexcept
 {
 	if (!_onClickCallback || !_enabled) return;
 
-	Vector2 mousePos;
-	SDL_GetMouseState(&mousePos.x, &mousePos.y);
-	int windowSizeX, windowSizeY;
-	SDL_GetWindowSize(const_cast<SDL_Window*>(SSGE::GetWindow()), &windowSizeX, &windowSizeY);
-
-	mousePos.x /= windowSizeX;
-	mousePos.y /= windowSizeY;
-
-	Vector2 renderBounds = SSGE::GetRenderBounds();
-	mousePos.x *= renderBounds.x;
-	mousePos.y *= renderBounds.y;
+	Vector2 mousePos = SSGE::GetMousePosition();
 
 	if (_absoluteRect.IsPointInsideRect(mousePos))
 	{

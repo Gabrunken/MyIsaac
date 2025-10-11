@@ -16,6 +16,7 @@ namespace SSGE
 	inline const SDL_Renderer* GetRenderer() noexcept {return renderer;}
 	inline const SDL_Window* GetWindow() noexcept {return window;}
 	inline Vector2 GetRenderBounds() noexcept {return renderBounds;}
+	Vector2 GetMousePosition() noexcept;
 
 	template<typename T>
 	bool Init(const std::string& windowTitle, Vector2 windowSize, Vector2 inRenderBounds) noexcept

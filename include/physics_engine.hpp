@@ -33,6 +33,9 @@ private:
 
     //Update the sprites' state based on their accumulated forces.
     static void ProcessSpritePhysics(double deltaTime);
+
+    static Vector2 CheckForAABB(Sprite& a, Sprite& b);
+
     static inline std::vector<Sprite*> _sprites;
 
 	static inline float _gravityAcceleration = 9.81f;

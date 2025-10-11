@@ -119,6 +119,11 @@ public:
 		return deltaX * deltaX + deltaY * deltaY;
 	}
 
+	static inline constexpr float Dot(const Vector2& first, const Vector2& second) noexcept
+	{
+		return first.x * second.x + first.y * second.y;
+	}
+
 	static constexpr Vector2 Up() noexcept    { return Vector2(0.0f, 1.0f); }
 	static constexpr Vector2 Right() noexcept { return Vector2(1.0f, 0.0f); }
 	static constexpr Vector2 Down() noexcept  { return Vector2(0.0f, -1.0f); }
