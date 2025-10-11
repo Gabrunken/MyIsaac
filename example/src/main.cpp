@@ -1,5 +1,6 @@
 #include <ssge.hpp>
 #include <math.h>
+#include <iostream>
 
 class ExampleGameState : public GameStateBase
 {
@@ -7,11 +8,14 @@ public:
 	~ExampleGameState() {}
     ExampleGameState()
      : ball("atlas.png", Rect({100, 76}, 16), SDL_SCALEMODE_NEAREST)
-    {}
+    {
+		_updateDelay = 1000.0f/60.0f; //i override the GameStateBase max fps.
+		_physicsUpdateDelay = 1000.0f/60.0f;
+
+		ball.gravityMultiplier = 1.0f;
+    }
 
 protected:
-	float _updateDelay = 1000.0f/60.0f; //i override the GameStateBase max fps.
-
 	virtual EventHandlingResult HandleEvents(const SDL_Event& event) override
 	{
         switch (event.type)
@@ -70,11 +74,15 @@ protected:
     	return EventHandlingResult::Continue;
 	}
 
-	virtual void Update(float deltaTime) override
+	virtual void PhysicsUpdate(double deltaTime) override
+	{
+		PhysicsEngine::AddForce(ball, movementInput * movementSpeed);
+	}
+
+	virtual void Update(double deltaTime) override
 	{
 		GameStateBase::Update(deltaTime);
 		ball.Rotate(deltaTime * sin(_timeSinceCreation) * 100.0f);
-		ball.Move(movementInput.GetNormalized() * deltaTime * movementSpeed);
 	}
 
 	virtual void Render() override
@@ -86,7 +94,7 @@ protected:
 
 	Sprite ball;
 	Vector2 movementInput;
-	float movementSpeed = 3.0f;
+	float movementSpeed = 20.0f;
 };
 
 int main()

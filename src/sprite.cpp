@@ -1,6 +1,23 @@
 #include <sprite.hpp>
 #include <cmath>
 #include <algorithm>
+#include <ssge.hpp>
+
+Sprite::Sprite(const std::string& texturePath, Rect atlasRect, SDL_ScaleMode scaleMode)
+ : _texturePtr(ResourceManager::GetInstance().LoadResource<SDL_Texture>(texturePath, scaleMode)),
+   _atlasRect(atlasRect)
+{
+    //Set rect size based on texture size
+    SetScale(Vector2(1.0f)); //Doing this works too, i prevent code redundancy
+    //Add self to the physics system
+    PhysicsEngine::AddSprite(this);
+}
+
+Sprite::~Sprite()
+{
+    //Remove self from the physics system
+    PhysicsEngine::RemoveSprite(this);
+}
 
 void Sprite::DrawSelf() const noexcept
 {
