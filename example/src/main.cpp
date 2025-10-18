@@ -19,7 +19,7 @@ public:
 	~ExampleGameState() {}
     ExampleGameState()
      : ball("atlas.png", Rect({100, 76}, 16), SDL_SCALEMODE_NEAREST),
-       ball2("atlas.png", Rect({100, 76}, 16), SDL_SCALEMODE_NEAREST)
+       ball2("atlas.png", Rect({100, 28}, 16), SDL_SCALEMODE_NEAREST)
     {
 		_updateDelay = 1000.0f/60.0f; //i override the GameStateBase max fps.
 		_physicsUpdateDelay = 1000.0f/60.0f;
@@ -28,7 +28,7 @@ public:
 		ball.SetOnCollisionEnterCallback(OnBallCollisionEnter);
 		ball.SetOnCollisionExitCallback(OnBallCollisionExit);
 
-		ball2.gravityMultiplier = 0.0f;
+		ball2.gravityMultiplier = 1.0f;
 		ball2.SetOnCollisionEnterCallback(OnBallCollisionEnter);
 		ball2.SetOnCollisionExitCallback(OnBallCollisionExit);
 
@@ -97,7 +97,7 @@ protected:
 	virtual void PhysicsUpdate(double deltaTime) override
 	{
 		PhysicsEngine::AddForce(ball, (SSGE::GetMousePosition() - ball.GetPositionCentered()) * movementSpeed);
-		PhysicsEngine::AddForce(ball2, (SSGE::GetMousePosition() - ball2.GetPositionCentered()) * movementSpeed);
+		//PhysicsEngine::AddForce(ball2, (SSGE::GetMousePosition() - ball2.GetPositionCentered()) * movementSpeed);
 	}
 
 	virtual void Update(double deltaTime) override

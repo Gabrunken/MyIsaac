@@ -21,20 +21,24 @@ Sprite::~Sprite()
 
 void Sprite::DrawSelf() const noexcept
 {
+    SDL_FRect atlasSDLFRect = _atlasRect.GetSDLFRect();
+    SDL_FRect SDLFRect = _rect.GetSDLFRect();
+
 	SDL_Texture* texture = _texturePtr.get();
 	if (!texture) return;
 	if (std::fabs(_rotation) < 1e-5f)
 	    SDL_RenderTexture(
 	    const_cast<SDL_Renderer*>(SSGE::GetRenderer()),
 	    texture,
-	    &_atlasRect.GetSDLFRect(),
-	    &_rect.GetSDLFRect());
+	    &atlasSDLFRect,
+	    &SDLFRect);
+
     else
         SDL_RenderTextureRotated(
         const_cast<SDL_Renderer*>(SSGE::GetRenderer()),
         texture,
-        &_atlasRect.GetSDLFRect(),
-        &_rect.GetSDLFRect(),
+        &atlasSDLFRect,
+        &SDLFRect,
         _rotation,
         nullptr,
         SDL_FLIP_NONE
